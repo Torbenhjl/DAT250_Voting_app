@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Polls</title>
+</head>
+<body>
+    <nav>
+        <a href="/home">Home</a>
+        <a href="/polls">Polls</a>
+        <a href="/createPoll">Create Poll</a>
+        <a href="/logout">Logout</a>
+    </nav>
+
+    <div class="poll-container">
+        <h2>Available Polls</h2>
+        <ul>
+            <li th:each="poll : ${polls}">
+                <p th:text="${poll.question}"></p>
+                <form th:action="@{/vote}" method="post">
+                    <ul>
+                        <li th:each="option : ${poll.voteOptions}">
+                            <label>
+                                <input type="radio" th:name="'optionId'" th:value="${option.id}">
+                                <span th:text="${option.caption}"></span>
+                                <!-- Display vote count for each option -->
+                                <span> - Votes: <span th:text="${pollVoteCounts[poll.id][option.id]}"></span></span>
+                            </label>
+                        </li>
+                    </ul>
+                    <input type="hidden" th:name="pollId" th:value="${poll.id}" />
+                    <button type="submit">Submit Vote</button>
+                </form>
+                
+                <!-- Add delete button for each poll -->
+                <form th:action="@{/deletePoll}" method="get">
+                    <input type="hidden" th:name="pollId" th:value="${poll.id}" />
+                    <button type="submit">Delete Poll</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+</html>

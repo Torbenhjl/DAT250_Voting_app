@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .poll {
+            margin-bottom: 20px;
+        }
+
+        .poll h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .poll-options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .poll-options li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Polls</h1>
+    <div id="polls-container">
+        <!-- Polls will be inserted here by JavaScript -->
+    </div>
+
+    <script>
+        // Fetch polls from the REST API
+        fetch('/api/polls')
+            .then(response => response.json())
+            .then(polls => {
+                const container = document.getElementById('polls-container');
+                polls.forEach(poll => {
+                    // Create a poll element
+                    const pollElement = document.createElement('div');
+                    pollElement.classList.add('poll');
+
+                    // Add the poll question
+                    const question = document.createElement('h3');
+                    question.textContent = poll.question;
+                    pollElement.appendChild(question);
+
+                    // Add poll options
+                    const optionsList = document.createElement('ul');
+                    optionsList.classList.add('poll-options');
+                    poll.voteOptions.forEach(option => {
+                        const optionItem = document.createElement('li');
+                        optionItem.textContent = option.caption;
+                        optionsList.appendChild(optionItem);
+                    });
+
+                    pollElement.appendChild(optionsList);
+
+                    // Append poll element to the container
+                    container.appendChild(pollElement);
+                });
+            })
+            .catch(error => console.error('Error fetching polls:', error));
+    </script>
+</body>
+</html>

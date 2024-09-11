@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Poll</title>
+    <script type="text/javascript">
+function addOption() {
+    var optionCount = document.querySelectorAll('.vote-option').length;
+    var newOptionDiv = document.createElement('div');
+    newOptionDiv.className = 'vote-option';
+
+    newOptionDiv.innerHTML = `
+        <label for="option${optionCount}">Option ${optionCount + 1}:</label>
+        <input type="text" id="option${optionCount}" name="voteOptions[${optionCount}].caption" required>
+        <button type="button" onclick="removeOption(this)">Remove</button>
+    `;
+
+    document.getElementById('options-container').appendChild(newOptionDiv);
+}
+
+
+        function removeOption(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</head>
+<body>
+    <h2>Create a Poll</h2>
+    <form th:action="@{/createPoll}" method="post" th:object="${poll}">
+        <label for="question">Poll Question:</label>
+        <input type="text" id="question" name="question" th:field="*{question}" required>
+    
+        <label for="validUntil">Valid Until:</label>
+        <input type="datetime-local" id="validUntil" name="validUntil" th:field="*{validUntil}" required>
+    
+        <!-- Container for the vote options -->
+        <div id="options-container">
+            <div class="vote-option">
+                <label for="option1">Option 1:</label>
+                <input type="text" id="option1" name="voteOptions[0].caption" required>
+            </div>
+        
+            <div class="vote-option">
+                <label for="option2">Option 2:</label>
+                <input type="text" id="option2" name="voteOptions[1].caption" required>
+            </div>
+        </div>
+        
+        <button type="button" onclick="addOption()">Add Another Option</button>
+    
+        <button type="submit">Create Poll</button>
+    </form>
+    
+</body>
+</html>
