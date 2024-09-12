@@ -26,6 +26,10 @@ public class VoteService {
     public boolean hasUserVoted(Poll poll, User user) {
         return voteRepo.existsByPollAndVotedBy(poll, user);
     }
+    public List<Vote> getVotesByPoll(Poll poll) {
+        return voteRepo.findByPoll(poll);
+    }
+    
 
     // Count the number of votes for a specific option
     public long countVotesByOption(VoteOption option) {

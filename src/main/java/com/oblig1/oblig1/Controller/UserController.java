@@ -21,7 +21,7 @@ import com.oblig1.oblig1.Service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:54751/")  // Adjust this to the correct port if necessary
+@CrossOrigin(origins = "http://localhost:57030/", allowCredentials = "true") 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -93,5 +93,25 @@ public class UserController {
 
         userService.deleteUser(username);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully");
+    }
+    @GetMapping("/current")
+    public ResponseEntity<User> getCurrentUser(HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        User user = userService.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok("Logged out successfully");
     }
 }

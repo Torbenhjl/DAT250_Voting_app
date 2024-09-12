@@ -1,6 +1,7 @@
 package com.oblig1.oblig1.Model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,17 @@ public class VoteOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "vote_count")
+    private Integer voteCount;
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer count) {
+        this.voteCount = count;
+    }
 
     public Long getId() {
         return id;

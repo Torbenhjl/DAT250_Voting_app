@@ -7,7 +7,10 @@
         const res = await fetch('http://localhost:8080/api/users/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, email })
+            body: JSON.stringify({ username, password, email }),
+
+            credentials: 'include'
+
         });
 
         if (res.ok) {

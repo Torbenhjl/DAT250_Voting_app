@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,15 +27,16 @@ public class Poll {
     private LocalDateTime validUntil;
     private LocalDateTime publishedAt;
 
+    @JsonProperty("isPrivate")
+    private boolean isPrivate;  // Add this line
+
     @ManyToOne
     private User createdBy;
 
     @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<VoteOption> voteOptions= new ArrayList<>();  // Initialize as an empty list
+    private List<VoteOption> voteOptions = new ArrayList<>();
 
-    public Poll() {}
-
+    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -82,4 +85,11 @@ public class Poll {
         this.createdBy = createdBy;
     }
 
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
+    }
 }

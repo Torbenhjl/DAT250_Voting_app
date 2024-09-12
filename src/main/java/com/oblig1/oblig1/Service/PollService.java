@@ -4,6 +4,7 @@ import com.oblig1.oblig1.Model.Poll;
 import com.oblig1.oblig1.Model.VoteOption;
 import com.oblig1.oblig1.Repo.PollRepo;
 import com.oblig1.oblig1.Repo.VoteOptionRepo;
+import com.oblig1.oblig1.Repo.VoteRepo;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -22,6 +23,8 @@ public class PollService {
     @Autowired
     private VoteOptionRepo voteOptionRepo;
 
+    @Autowired
+    private  VoteRepo voteRepo;
     // Create and save a poll
     public Poll createPoll(Poll poll) {
         return pollRepo.save(poll);
@@ -61,6 +64,30 @@ public class PollService {
         }
         pollRepo.deleteById(pollId);
     }
+
+
+ 
+    public Poll getPollWithVotes(Long pollId) {
+        Poll poll = pollRepo.findById(pollId).orElseThrow(() -> new RuntimeException("Poll not found"));
+
+        // Count votes for each vote option
+        for (VoteOption option : poll.getVoteOptions()) {
+            Integer count = voteRepo.countByOption(option);
+            option.setVoteCount(count);  // Set the vote count for this option
+        }
+
+        return poll;
+    }
+    public void incrementVoteCount(Long optionId) {
+        VoteOption option = voteOptionRepo.findById(optionId)
+                .orElseThrow(() -> new EntityNotFoundException("Option not found"));
+        
+        int newCount = option.getVoteCount() + 1;
+        option.setVoteCount(newCount);
+    
+        voteOptionRepo.save(option);  // Ensure the updated count is saved to the DB
+    }
+    
 
     // Additional poll management methods can be added if needed
 }
