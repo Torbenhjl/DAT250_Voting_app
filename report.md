@@ -29,7 +29,6 @@ Frontend Page Navigation: After logging in or logging out, the navigation in the
 Code
 The code used in this experiment can be found in the following files:
 
-Frontend (Svelte)
-Backend (Spring Boot)
-Conclusion
-This project provided a good opportunity to integrate a modern frontend framework (Svelte) with a traditional backend (Spring Boot). While there were issues with session management and state updates, these were resolved by improving the handling of HTTP sessions and state in Svelte.
+Frontend (Svelte) svelte-app
+Backend (Spring Boot) src
+
