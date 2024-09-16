@@ -7,7 +7,7 @@
 
     // Fetch polls from the backend
  // Log the received polls to see if isPrivate is correct
-const getPolls = async () => {
+ const getPolls = async () => {
     try {
         const res = await fetch('http://localhost:8080/api/polls', {
             credentials: 'include',
@@ -16,7 +16,9 @@ const getPolls = async () => {
             throw new Error(`Failed to fetch polls: ${res.statusText}`);
         }
         polls = await res.json();
-        console.log("Received Polls:", polls);  // Log the received polls
+        
+        // Log the full response to ensure the voteCount is correct
+        console.log("Received Polls:", polls);  // Ensure this matches your database vote counts
 
         polls = polls.map(poll => ({ ...poll, selectedOptionId: null }));
     } catch (error) {
@@ -25,8 +27,10 @@ const getPolls = async () => {
 };
 
 
+
+
     // Submit the selected vote
-    const submitVote = async (pollId, selectedOptionId) => {
+    const submitVote = async (pollId, selectedOptionId, isUpvote) => {
         if (!selectedOptionId) {
             error = 'Please select an option before submitting your vote.';
             return;
@@ -39,7 +43,7 @@ const getPolls = async () => {
             const res = await fetch('http://localhost:8080/api/votes', { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ optionId: selectedOptionId, pollId: pollId }),
+                body: JSON.stringify({ optionId: selectedOptionId, pollId: pollId, isUpvote }),
                 credentials: 'include'
             });
 
@@ -102,12 +106,18 @@ const getPolls = async () => {
                         <label>
                             <input type="radio" bind:group={poll.selectedOptionId} value={option.id} />
                             {option.caption} ({option.voteCount || 0} votes)
+                            
+
                         </label>
                     </li>
                 {/each}
             </ul>
-            <button on:click={() => submitVote(poll.id, poll.selectedOptionId)} disabled={submitting}>
-                {submitting ? 'Submitting...' : 'Submit Vote'}
+            <button on:click={() => submitVote(poll.id, poll.selectedOptionId, true)} disabled={submitting} class = "upvote">
+                {submitting ? 'Submitting...' : 'Upvote'}
+                
+            </button>
+            <button on:click={() => submitVote(poll.id, poll.selectedOptionId, false)} disabled={submitting} class = "downvote">
+                {submitting ? 'Submitting...' : 'Downvote'}
             </button>
             <button on:click={() => deletePoll(poll.id)} class="delete-button">
                 Delete Poll
@@ -128,6 +138,7 @@ const getPolls = async () => {
     button[disabled] {
         opacity: 0.6;
         cursor: not-allowed;
+        
     }
     .delete-button {
         background-color: rgb(195, 81, 81);
@@ -135,4 +146,16 @@ const getPolls = async () => {
         margin-left: 10px;
         cursor: pointer;
     }
+    .upvote {
+        color: rgb(0, 0, 0);
+    }
+    .upvote {
+        background: linear-gradient(90deg, #5eff00 0%, #a3efab 100%);
+        
+    }
+    .downvote {
+        background: linear-gradient(90deg, #ff0000 0%, #e98c8c 100%);
+        
+    }
+    
 </style>

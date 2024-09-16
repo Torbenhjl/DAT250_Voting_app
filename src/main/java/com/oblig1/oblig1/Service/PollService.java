@@ -34,6 +34,10 @@ public class PollService {
     public Poll savePoll(Poll poll) {
         return pollRepo.save(poll);
     }
+    public void saveVoteOption(VoteOption option) {
+        voteOptionRepo.save(option);  // This will save any changes made to the vote count
+    }
+    
 
     // Get a poll by ID
     public Optional<Poll> getPollById(Long pollId) {

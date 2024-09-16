@@ -21,7 +21,7 @@ import com.oblig1.oblig1.Service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:57030/", allowCredentials = "true") 
+@CrossOrigin(origins = "http://localhost:50915", allowCredentials = "true") 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

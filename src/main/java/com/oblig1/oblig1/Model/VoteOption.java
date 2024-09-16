@@ -22,7 +22,7 @@ public class VoteOption {
     private Long id;
     
     @Column(name = "vote_count")
-    private Integer voteCount;
+    private Integer voteCount = 0;
 
     public Integer getVoteCount() {
         return voteCount;
