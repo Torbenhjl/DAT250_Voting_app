@@ -25,6 +25,7 @@ During development, a few key issues were faced:
 Session Management: There were issues in tracking the logged-in user session. Initially, the GET /api/users/current endpoint was not working, and it required proper session management via the HttpSession in Spring Boot.
 Incorrect Display of Private Polls: Polls were being marked as public even when created as private due to an incorrect mapping of the isPrivate field. This issue was resolved by adding the @JsonProperty annotation to ensure proper serialization.
 Frontend Page Navigation: After logging in or logging out, the navigation in the Svelte frontend wasn’t updating correctly. The issue was related to missing state updates, and I had to ensure the navigation state (currentPage) was updated after login/logout.
+I tried to make a Upvote/downvote option but i couldn't quite make it work before the deadline and i am working on it now. The issue is simply that both upvotes and downvotes are the same, a vote so downvotes is more or less the same as an upvote.
 
 Code
 The code used in this experiment can be found in the following files:
