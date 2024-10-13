@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+</head>
+<body>
+    <h1>Welcome to the Poll App!</h1>
+    <p>You can now vote on polls or create your own.</p>
+
+    <a href="/polls">Vote on Polls</a> |
+    <a th:href="@{/createPoll}">Create a Poll</a>
+    <p><a th:href="@{/login}">Logout</a></p>
+</body>
+</html>
